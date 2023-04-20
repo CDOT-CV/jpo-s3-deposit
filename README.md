@@ -129,3 +129,16 @@ A launch.json file with some launch configurations have been included to allow d
 The values between braces < > are stand-in and need to be replaced by the developer. 
 
 To run the project through the launch configuration and start debugging, the developer can navigate to the Run panel (View->Run or Ctrl+Shift+D), select the configuration at the top, and click the green arrow or press F5 to begin.
+
+# Troubleshooting
+## Error: 412 Precondition Failed
+This error can be resolved by not passing an endpoint into the project. When an endpoint is passed into the project, the S3D attempts to get credentials from AWS prior to creating the S3 client. The error occurs when this request is made. When no endpoint is passed into the project, the S3D can successfully connect to Amazon S3, subscribe to the topic, and deposit into the S3 bucket.
+
+## Error: The AWS Access Key Id you provided does not exist in our records.
+This error occurs when an access key id that doesn't exist is used. Make sure to use the correct access key id for the account.
+
+## Error: The provided token is malformed or otherwise invalid.
+This error may be a permissions issue with the access token or it may have to do with the AWS_SESSION_TOKEN, which always has a default value. The issue has not yet been resolved.
+
+## Error: Group argument not found
+This error has occurred when running the project with docker-compose but works fine when running the project locally. The issue has not yet been resolved.

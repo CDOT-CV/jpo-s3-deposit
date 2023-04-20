@@ -10,3 +10,7 @@ consumer-example.iml
 /.settings/*
 /bin
 /*.log
+
+.env
+
+policy.json
