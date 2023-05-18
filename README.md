@@ -114,14 +114,14 @@ There is a provided docker-compose file (docker-compose-confluent-cloud.yml) tha
 This has only been tested with Confluent Cloud but technically all SASL authenticated Kafka brokers can be reached using this method.
 
 # Run Script
-The run.sh script can be utilized to run the PPM manually.
+The run.sh script can be utilized to run the S3D manually.
 
 It should be noted that this script must be run from the project root folder, or it will not work.
 
 # Docker Compose Files
-The docker-compose.yml file can be used to spin up the PPM as a container, along with instances of kafka and zookeeper.
+The docker-compose.yml file can be used to spin up the S3D as a container, along with instances of kafka and zookeeper.
 
-The docker-compose-confluent-cloud.yml file can be used to spin up the PPM as a container by itself. This depends on an instance of kafka hosted by Confluent Cloud.
+The docker-compose-confluent-cloud.yml file can be used to spin up the S3D as a container by itself. This depends on an instance of kafka hosted by Confluent Cloud.
 
 # Launch Configurations
 A launch.json file with some launch configurations have been included to allow developers to debug the project in VSCode.
