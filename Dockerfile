@@ -15,10 +15,15 @@ COPY --from=builder /home/target/jpo-aws-depositor-jar-with-dependencies.jar /ho
 CMD java -Dlogback.configurationFile=/home/logback.xml \
 	-jar /home/jpo-aws-depositor-jar-with-dependencies.jar \
 	-s $DOCKER_HOST_IP:9092 \
-	-d s3 \
-	-g $DEPOSIT_GROUP \
-	-k $DEPOSIT_KEY_NAME \
+	-h $HEADER_ACCEPT \
+	-x $HEADER_X_API_KEY \
 	-b $DEPOSIT_BUCKET_NAME \
 	-r $AWS_REGION \
+	-k $DEPOSIT_KEY_NAME \
 	-t $DEPOSIT_TOPIC \
-	-x $HEADER_X_API_KEY \
+	-g $DEPOSIT_GROUP \
+	-i $AWS_ACCESS_KEY_ID \
+	-a $AWS_SECRET_ACCESS_KEY \
+	-n $AWS_SESSION_TOKEN \
+	-e $AWS_EXPIRATION \
+	-d s3
