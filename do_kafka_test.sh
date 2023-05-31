@@ -38,6 +38,14 @@ setup() {
         exit 1
     fi
 
+    useEndpoint=false
+
+    # if API_ENDPOINT is set, set useEndpoint to true
+    if [ ! -z "$API_ENDPOINT" ]; then
+        useEndpoint=true
+        echo "API_ENDPOINT is set. Using API_ENDPOINT."
+    fi
+
     projectFolder=$(pwd | awk -F/ '{print $NF}')
     EXPECTED_KAFKA_CONTAINER_NAME="$projectFolder-kafka-1"
     echo "EXPECTED_KAFKA_CONTAINER_NAME: $EXPECTED_KAFKA_CONTAINER_NAME"
@@ -70,8 +78,14 @@ waitForKafkaToCreateTopics() {
 
 runS3D() {
     echo "Starting S3D."
-    # execute run.sh as daemon
-    ./run.sh &
+
+    if [ $useEndpoint == false ]; then
+        # execute run.sh as daemon
+        ./run.sh &
+    else
+        # execute run_with_endpoint.sh as daemon
+        ./run_with_endpoint.sh &
+    fi
 
     # wait for S3D to start
     echo "Sleeping for 10 seconds."
