@@ -4,5 +4,4 @@ if [ -z "$DOCKER_HOST_IP" ]; then
     exit 1
 fi
 
-echo "Stopping Kafka."
 docker-compose -f docker-compose-kafka.yml down --remove-orphans

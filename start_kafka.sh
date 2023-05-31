@@ -4,5 +4,7 @@ if [ -z "$DOCKER_HOST_IP" ]; then
     exit 1
 fi
 
+./stop_kafka.sh
+
 echo "Starting Kafka."
-docker-compose -f docker-compose-kafka.yml up --remove-orphans
+docker-compose -f docker-compose-kafka.yml up --remove-orphans -d
