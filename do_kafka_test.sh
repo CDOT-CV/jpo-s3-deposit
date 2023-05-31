@@ -1,21 +1,20 @@
 # !/bin/bash
 
-# get name of project folder
-projectFolder=$(pwd | awk -F/ '{print $NF}')
-EXPECTED_KAFKA_CONTAINER_NAME="$projectFolder-kafka-1"
-echo "EXPECTED_KAFKA_CONTAINER_NAME: $EXPECTED_KAFKA_CONTAINER_NAME"
+# This script is used to test the S3D application.
+# It starts Kafka, S3D, and pushes test data to Kafka.
+# It then kills S3D and Kafka.
+
+# Make sure to set the following environment variables:
+# - DOCKER_HOST_IP
+# - DEPOSIT_GROUP
+# - DEPOSIT_KEY_NAME
+# - DEPOSIT_BUCKET_NAME
+# - AWS_REGION
+# - DEPOSIT_TOPIC
+# - HEADER_X_API_KEY
 
 setup() {
-    # Make sure to set the following environment variables:
-    # - DOCKER_HOST_IP
-    # - DEPOSIT_GROUP
-    # - DEPOSIT_KEY_NAME
-    # - DEPOSIT_BUCKET_NAME
-    # - AWS_REGION
-    # - DEPOSIT_TOPIC
-    # - HEADER_X_API_KEY
-
-    # if any of the above are not set, exit
+    # if any of the required environment variables are not set, exit
     if [ -z "$DOCKER_HOST_IP" ]; then
         echo "DOCKER_HOST_IP is not set. Exiting."
         exit 1
@@ -38,6 +37,10 @@ setup() {
         echo "HEADER_X_API_KEY is not set. Exiting."
         exit 1
     fi
+
+    projectFolder=$(pwd | awk -F/ '{print $NF}')
+    EXPECTED_KAFKA_CONTAINER_NAME="$projectFolder-kafka-1"
+    echo "EXPECTED_KAFKA_CONTAINER_NAME: $EXPECTED_KAFKA_CONTAINER_NAME"
 
     ./start_kafka.sh
 }
