@@ -113,22 +113,54 @@ There is a provided docker-compose file (docker-compose-confluent-cloud.yml) tha
 ## Note
 This has only been tested with Confluent Cloud but technically all SASL authenticated Kafka brokers can be reached using this method.
 
-# Run Script
-The run.sh script can be utilized to run the S3D manually.
+# Running the Project
+## Run Script
+The `run.sh` & `run_with_endpoint.sh` scripts can be utilized to run the S3D manually.
 
 It should be noted that this script must be run from the project root folder, or it will not work.
 
-# Docker Compose Files
-The docker-compose.yml file can be used to spin up the S3D as a container, along with instances of kafka and zookeeper.
+### Environment Variables
+The following environment variables must be set in order for the script to run properly.
+- DOCKER_HOST_IP
+- DEPOSIT_GROUP
+- DEPOSIT_KEY_NAME
+- DEPOSIT_BUCKET_NAME
+- AWS_REGION
+- DEPOSIT_TOPIC
+- HEADER_X_API_KEY
+- API_ENDPOINT (only for `run_with_endpoint.sh`)
 
-The docker-compose-confluent-cloud.yml file can be used to spin up the S3D as a container by itself. This depends on an instance of kafka hosted by Confluent Cloud.
+## Docker Compose Files
+The `docker-compose.yml` file can be used to spin up the S3D as a container, along with instances of kafka and zookeeper.
 
-# Launch Configurations
+The `docker-compose-confluent-cloud.yml` file can be used to spin up the S3D as a container by itself. This depends on an instance of kafka hosted by Confluent Cloud.
+
+## Launch Configurations
 A launch.json file with some launch configurations have been included to allow developers to debug the project in VSCode.
 
 The values between braces < > are stand-in and need to be replaced by the developer. 
 
 To run the project through the launch configuration and start debugging, the developer can navigate to the Run panel (View->Run or Ctrl+Shift+D), select the configuration at the top, and click the green arrow or press F5 to begin.
+
+## Integration Testing
+The `do_kafka_test.sh` script can be used to test the S3D's ability to connect to a Kafka broker, subscribe to a topic, and deposit a message into an S3 bucket.
+
+If the 'target' directory does not exist, the script will run `mvn clean compile assembly:single install` to create the jar file.
+
+If the API_ENDPOINT environment variable is set, the script will use `run_with_endpoint.sh` to run the S3D. Otherwise, it will use `run.sh`.
+
+The bucket information & credentials are read from the machine's environment variables. These must be set in your shell prior to running the script.
+
+### Environment Variables
+The following environment variables must be set in order for the script to run properly.
+- DOCKER_HOST_IP
+- DEPOSIT_GROUP
+- DEPOSIT_KEY_NAME
+- DEPOSIT_BUCKET_NAME
+- AWS_REGION
+- DEPOSIT_TOPIC
+- HEADER_X_API_KEY
+- API_ENDPOINT (optional)
 
 # Troubleshooting
 ## Error: 412 Precondition Failed
