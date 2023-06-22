@@ -14,14 +14,6 @@
 # - HEADER_X_API_KEY
 
 setup() {
-    # build if target folder does not exist
-    if [ ! -d "target" ]; then
-        echo "Building."
-        mvn clean package assembly:single
-    else
-        echo "Target folder exists. Skipping build."
-    fi
-
     # if any of the required environment variables are not set, exit
     if [ -z "$DOCKER_HOST_IP" ]; then
         echo "DOCKER_HOST_IP is not set. Exiting."
@@ -57,6 +49,10 @@ setup() {
     projectFolder=$(pwd | awk -F/ '{print $NF}')
     EXPECTED_KAFKA_CONTAINER_NAME="$projectFolder-kafka-1"
     echo "EXPECTED_KAFKA_CONTAINER_NAME: $EXPECTED_KAFKA_CONTAINER_NAME"
+
+    # build
+    echo "Building."
+    mvn clean package assembly:single
 
     ./start_kafka.sh
 }
