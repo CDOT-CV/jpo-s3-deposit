@@ -4,6 +4,13 @@
 # It starts Kafka, S3D, and pushes test data to Kafka.
 # It then kills S3D and Kafka.
 
+# This script depends on the following scripts:
+# - start_kafka.sh
+# - stop_kafka.sh
+# - run.sh
+# - run_with_endpoint.sh
+# - send_data_to_topic.sh
+
 # Make sure to set the following environment variables:
 # - DOCKER_HOST_IP
 # - DEPOSIT_GROUP
