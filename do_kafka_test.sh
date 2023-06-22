@@ -72,7 +72,7 @@ waitForKafkaToCreateTopics() {
             exit 1
         fi
 
-        ltopics=$(docker exec -it $EXPECTED_KAFKA_CONTAINER_NAME /opt/kafka/bin/kafka-topics.sh --list --zookeeper 172.17.0.1)
+        ltopics=$(docker exec -it $EXPECTED_KAFKA_CONTAINER_NAME /opt/kafka/bin/kafka-topics.sh --list --zookeeper $DOCKER_HOST_IP:2181)
         allTopicsCreated=true
         if [ $(echo $ltopics | grep "topic.OdeBsmJson" | wc -l) == "0" ]; then
             allTopicsCreated=false
