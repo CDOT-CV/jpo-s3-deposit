@@ -1,5 +1,7 @@
 package us.dot.its.jpo.ode.s3.depositor;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
@@ -19,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import lombok.Getter;
 import lombok.Setter;
+import us.dot.its.jpo.ode.s3.depositor.models.imp.ConfigData;
+import us.dot.its.jpo.ode.s3.depositor.models.imp.NetworkType;
 import us.dot.its.jpo.ode.s3.depositor.utils.CommonUtils;
 import lombok.AccessLevel;
 
@@ -93,17 +97,19 @@ public class DepositorProperties implements EnvironmentAware {
 	/*
 	 * IMP Properties
 	 */
+	private Boolean impEnabled;
 	private String impVendor;
-	private String impNetworkType;
+	private NetworkType impNetworkType;
 	private String impPartnerApiBaseUri;
 	private String impPartnerUser;
 	private String impPartnerPass;
-	private String impClientType;
-	private String impClientSubType;
+	private String impClientType = "Software";
+	private String impClientSubType = "Application";
 	private String impTopicType;
 	private String impCacheRegistration;
-	private String impMecLatitude;
-	private String impMecLongitude;
+	private BigDecimal impMecLatitude;
+	private BigDecimal impMecLongitude;
+	private String impCertPath;
 
 	@Setter(AccessLevel.NONE)
 	@Autowired
@@ -177,15 +183,24 @@ public class DepositorProperties implements EnvironmentAware {
 		// HEADER_X_API_KEY = CommonUtils.getEnvironmentVariable("HEADER_X_API_KEY",
 		// "");
 
-		impVendor = CommonUtils.getEnvironmentVariable("IMP_VENDOR");
-		impNetworkType = CommonUtils.getEnvironmentVariable("IMP_NETWORK_TYPE");
-		impPartnerApiBaseUri = CommonUtils.getEnvironmentVariable("IMP_PARTNER_API_BASE_URI");
-		impPartnerUser = CommonUtils.getEnvironmentVariable("IMP_PARTNER_USER");
-		impPartnerPass = CommonUtils.getEnvironmentVariable("IMP_PARTNER_PASS");
-		impClientType = CommonUtils.getEnvironmentVariable("IMP_CLIENT_TYPE");
-		impClientSubType = CommonUtils.getEnvironmentVariable("IMP_CLIENT_SUB_TYPE");
-		impMecLatitude = CommonUtils.getEnvironmentVariable("IMP_MEC_LATITUDE");
-		impMecLongitude = CommonUtils.getEnvironmentVariable("IMP_MEC_LONGITUDE");
+		impEnabled = CommonUtils.getEnvironmentVariable("IMP_ENABLED", "false").equalsIgnoreCase("true");
+
+		if (impEnabled) {
+			logger.info("IMP is enabled");
+			impVendor = CommonUtils.getEnvironmentVariable("IMP_VENDOR");
+			String impNetworkTypeStr = CommonUtils.getEnvironmentVariable("IMP_NETWORK_TYPE");
+			impNetworkType = NetworkType.fromValue(impNetworkTypeStr);
+			impPartnerApiBaseUri = CommonUtils.getEnvironmentVariable("IMP_PARTNER_API_BASE_URI");
+			impPartnerUser = CommonUtils.getEnvironmentVariable("IMP_PARTNER_USER");
+			impPartnerPass = CommonUtils.getEnvironmentVariable("IMP_PARTNER_PASS");
+			String impMecLatitudeStr = CommonUtils.getEnvironmentVariable("IMP_MEC_LATITUDE");
+			impMecLatitude = new BigDecimal(impMecLatitudeStr);
+			String impMecLongitudeStr = CommonUtils.getEnvironmentVariable("IMP_MEC_LONGITUDE");
+			impMecLongitude = new BigDecimal(impMecLongitudeStr);
+			impCertPath = CommonUtils.getEnvironmentVariable("IMP_CERT_PATH");
+		} else {
+			logger.info("IMP is disabled");
+		}
 
 	}
 

@@ -23,6 +23,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
 import us.dot.its.jpo.ode.s3.depositor.DepositorProperties;
+import us.dot.its.jpo.ode.s3.depositor.imp.ImpRegistration;
 
 @SpringBootApplication
 @EnableKafka
@@ -41,11 +42,6 @@ public class DepositorApplication {
 		SystemConfig mBean = new SystemConfig(DEFAULT_NO_THREADS, DEFAULT_SCHEMA);
 		ObjectName name = new ObjectName("us.dot.its.jpo.ode.depositor:type=SystemConfig");
 		mbs.registerMBean(mBean, name);
-	}
-
-	@KafkaListener(topics = "topic1, topic2", groupId = "foo")
-	public void listen(String message) {
-		logger.info("Received message in group foo: " + message);
 	}
 
 }

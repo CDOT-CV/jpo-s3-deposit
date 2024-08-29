@@ -12,3 +12,6 @@ consumer-example.iml
 /*.log
 
 .env
+
+*.pem
+config.json
