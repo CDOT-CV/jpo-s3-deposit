@@ -8,8 +8,8 @@
             "type": "java",
             "name": "S3D",
             "request": "launch",
-            "mainClass": "us.dot.its.jpo.ode.aws.depositor.AwsDepositor",
-            "projectName": "jpo-aws-depositor",
+            "mainClass": "us.dot.its.jpo.ode.s3.depositor.DepositorApplication",
+            "projectName": "jpo-s3-depositor",
             "envFile": "${workspaceFolder}/.env",
         }
     ]

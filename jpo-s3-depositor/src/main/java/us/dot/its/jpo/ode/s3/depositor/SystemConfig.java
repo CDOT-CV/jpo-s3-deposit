@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package us.dot.its.jpo.ode.depositor;
+package us.dot.its.jpo.ode.s3.depositor;
 
 public class SystemConfig implements SystemConfigMBean {
 

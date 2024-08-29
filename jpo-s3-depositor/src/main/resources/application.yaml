@@ -3,27 +3,14 @@
 groupId: ^project.groupId^
 artifactId: ^project.artifactId^
 version: ^project.version^
-# server.port: 8082
+server.port: 8082
 
 # Kafka properties
 spring.kafka.bootstrap-servers: ${KAFKA_BROKER_IP:localhost}:9092
+spring.kafka.consumer.group-id: ^project.artifactId^
 
-logging.level.org.apache.kafka: INFO
-logging.level: INFO
-log4j.logger.kafka: OFF
-log4j.logger.org.apache.kafka: OFF
-
-
-# Custom kafka properties
-kafka.topics:
-  autoCreateTopics: true  # Override auto-create in test properties
-  numPartitions: 1
-  numReplicas: 1
-  sinkTopics:
-    - name: 
-    
-  # createTopics:
-  #   - name: topic.CmAppHealthNotifications
-  #     cleanupPolicy: delete
-  #     retentionMs: 300000
-    
+# logging.level.org.apache.kafka: INFO
+logging.level:
+  root: INFO
+# log4j.logger.kafka: OFF
+# log4j.logger.org.apache.kafka: OFF

@@ -12,4 +12,14 @@
             "CONFLUENT_SECRET": "testConfluentSecret",
         }
     },
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "cmake.configureOnOpen": false,
+    "editor.experimental.pasteActions.enabled": true,
+    "java.format.settings.url": ".vscode/java-formatter.xml",
+    "editor.formatOnSave": true,
+    "[xml]": {
+        "editor.defaultFormatter": "redhat.vscode-xml",
+        "editor.tabSize": 2
+    },
 }

@@ -1,0 +1,394 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  summary: IMP Cloud API (Partner Backend)
+  version: 0.1.0
+paths:
+  /auth/token:
+    post:
+      summary: Auth Get Access Token
+      description: Keycloak token generation endpoint
+      operationId: auth_get_access_token_auth_token_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthTokenRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthToken"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /auth/refresh-token:
+    post:
+      summary: Auth Refresh Token
+      description: Keycloak refresh token generation endpoint
+      operationId: auth_refresh_token_auth_refresh_token_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRefreshTokenRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthToken"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /{environment}/v1/registration-connection:
+    post:
+      summary: Client Registration Post
+      description: Register and connect a client, through the v1 IMP api
+      operationId: client_registration_post__environment__v1_registration_connection_post
+      security:
+        - OAuth2PasswordBearer: []
+      parameters:
+        - name: environment
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/ImpEnvironmentName"
+        - name: num_retries
+          in: query
+          required: false
+          schema:
+            type: integer
+            description: Include logs in the response
+            default: 5
+            title: Num Retries
+          description: Include logs in the response
+        - name: num_sec_to_sleep
+          in: query
+          required: false
+          schema:
+            type: integer
+            description: Include logs in the response
+            default: 15
+            title: Num Sec To Sleep
+          description: Include logs in the response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientRegistrationConnectionPostRequest"
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientCompleteResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+components:
+  schemas:
+    AuthRefreshTokenRequest:
+      properties:
+        refresh_token:
+          type: string
+          title: Refresh Token
+      type: object
+      required:
+        - refresh_token
+      title: AuthRefreshTokenRequest
+    AuthToken:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        expires_in:
+          type: integer
+          title: Expires In
+        refresh_expires_in:
+          type: integer
+          title: Refresh Expires In
+        refresh_token:
+          type: string
+          title: Refresh Token
+        token_type:
+          type: string
+          title: Token Type
+        id_token:
+          type: string
+          title: Id Token
+        not-before-policy:
+          type: integer
+          title: Not-Before-Policy
+        session_state:
+          type: string
+          title: Session State
+        scope:
+          type: string
+          title: Scope
+      type: object
+      required:
+        - access_token
+        - expires_in
+        - refresh_expires_in
+        - refresh_token
+        - token_type
+        - id_token
+        - not-before-policy
+        - session_state
+        - scope
+      title: AuthToken
+    AuthTokenRequest:
+      properties:
+        username:
+          type: string
+          title: Username
+        password:
+          type: string
+          title: Password
+      type: object
+      required:
+        - username
+        - password
+      title: AuthTokenRequest
+    Body_auth_get_access_token_form_auth_token_form_post:
+      properties:
+        grant_type:
+          anyOf:
+            - type: string
+              pattern: password
+            - type: "null"
+          title: Grant Type
+        username:
+          type: string
+          title: Username
+        password:
+          type: string
+          title: Password
+        scope:
+          type: string
+          title: Scope
+          default: ""
+        client_id:
+          anyOf:
+            - type: string
+            - type: "null"
+          title: Client Id
+        client_secret:
+          anyOf:
+            - type: string
+            - type: "null"
+          title: Client Secret
+      type: object
+      required:
+        - username
+        - password
+      title: Body_auth_get_access_token_form_auth_token_form_post
+    CertificateResponse:
+      properties:
+        cert.pem:
+          type: string
+          title: Cert.Pem
+        key.pem:
+          type: string
+          title: Key.Pem
+        ca.pem:
+          type: string
+          title: Ca.Pem
+      type: object
+      required:
+        - cert.pem
+        - key.pem
+        - ca.pem
+      title: CertificateResponse
+    ClientCompleteResponse:
+      properties:
+        registration:
+          $ref: "#/components/schemas/ClientRegistrationResponse"
+        connection:
+          $ref: "#/components/schemas/ClientConnectionResponse"
+      type: object
+      required:
+        - registration
+        - connection
+      title: ClientCompleteResponse
+    ClientConnectionPostRequest:
+      properties:
+        DeviceID:
+          type: string
+          title: Deviceid
+        lat:
+          type: number
+          title: Lat
+        long:
+          type: number
+          title: Long
+        NetworkType:
+          $ref: "#/components/schemas/NetworkType"
+      type: object
+      required:
+        - DeviceID
+        - lat
+        - long
+        - NetworkType
+      title: ClientConnectionPostRequest
+    ClientConnectionResponse:
+      properties:
+        MqttURL:
+          type: string
+          title: Mqtturl
+      type: object
+      required:
+        - MqttURL
+      title: ClientConnectionResponse
+    ClientErrorResponse:
+      properties:
+        error:
+          type: string
+          title: Error
+        description:
+          type: string
+          title: Description
+      type: object
+      required:
+        - error
+        - description
+      title: ClientErrorResponse
+    ClientRegistrationConnectionPostRequest:
+      properties:
+        ClientType:
+          type: string
+          title: Clienttype
+        ClientSubtype:
+          type: string
+          title: Clientsubtype
+        lat:
+          type: number
+          title: Lat
+        long:
+          type: number
+          title: Long
+        NetworkType:
+          $ref: "#/components/schemas/NetworkType"
+      type: object
+      required:
+        - ClientType
+        - ClientSubtype
+        - lat
+        - long
+        - NetworkType
+      title: ClientRegistrationConnectionPostRequest
+    ClientRegistrationPendingResponse:
+      properties:
+        DeviceID:
+          type: string
+          title: Deviceid
+        Message:
+          type: string
+          title: Message
+      type: object
+      required:
+        - DeviceID
+        - Message
+      title: ClientRegistrationPendingResponse
+    ClientRegistrationPostRequest:
+      properties:
+        ClientType:
+          type: string
+          title: Clienttype
+        ClientSubtype:
+          type: string
+          title: Clientsubtype
+      type: object
+      required:
+        - ClientType
+        - ClientSubtype
+      title: ClientRegistrationPostRequest
+    ClientRegistrationPutRequest:
+      properties:
+        DeviceID:
+          type: string
+          title: Deviceid
+      type: object
+      required:
+        - DeviceID
+      title: ClientRegistrationPutRequest
+    ClientRegistrationResponse:
+      properties:
+        DeviceID:
+          type: string
+          title: Deviceid
+        Certificate:
+          $ref: "#/components/schemas/CertificateResponse"
+      type: object
+      required:
+        - DeviceID
+        - Certificate
+      title: ClientRegistrationResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: "#/components/schemas/ValidationError"
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ImpEnvironmentName:
+      type: string
+      enum:
+        - prd
+        - stg
+        - qa
+        - dev
+      title: ImpEnvironmentName
+    NetworkType:
+      type: string
+      enum:
+        - non-VZ
+        - VZ
+      title: NetworkType
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+  securitySchemes:
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: auth/token/form

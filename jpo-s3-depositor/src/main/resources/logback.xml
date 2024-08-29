@@ -8,13 +8,13 @@
 		</encoder>
 	</appender>
 
-	<logger name="us.dot.its.jpo.conflictmonitor.eventlog.EventLogger" level="ERROR" />
-	
-	<logger name="org.springframework.web" level="INFO" />
-	<logger name="us.dot.its.jpo.conflictmonitor" level="INFO" />
-	
+	<logger name="us.dot.its.jpo.ode.depositor.eventlog.EventLogger" level="INFO" />
 
-	<root level="ERROR">
+	<logger name="org.springframework.web" level="INFO" />
+	<logger name="us.dot.its.jpo.ode.depositor" level="INFO" />
+
+
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>
